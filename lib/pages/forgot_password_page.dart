@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+
+import 'package:inblex_app/helpers/alert_message.dart';
 
 import 'package:inblex_app/widgets/custom_input.dart';
 import 'package:inblex_app/widgets/button_gradient.dart';
@@ -11,6 +14,7 @@ class ForgotPasswordPage extends StatelessWidget {
       appBar: AppBar(
         backgroundColor: Colors.white,
         elevation: 1.0,
+        brightness: Brightness.light,
         iconTheme: IconThemeData(
           color: Colors.black, //change your color here
         ),
@@ -54,7 +58,7 @@ class __FormState extends State<_Form> {
         children: [
           CustomInput(
             boxText: 'Email',
-            inputAction: TextInputAction.next,
+            inputAction: TextInputAction.done,
             placeholder: 'you@example.com',
             keyboardType: TextInputType.emailAddress,
             textController: emailCtrl,
@@ -67,6 +71,7 @@ class __FormState extends State<_Form> {
               text: 'Recupera tu contraseña',
               onPressed: () {
                 // TODO: Válidar contraseña olvidada
+                showAlertMessage(context, 'Recuperar cuenta', 'Disculpe las molestias, opción no válida por el momento.');
               }
            )),
         ],

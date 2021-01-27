@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 
 import 'package:inblex_app/pages/home_page.dart';
 import 'package:inblex_app/pages/login_page.dart';
@@ -27,8 +26,6 @@ class _SplashScreenPageState extends State<SplashScreenPage> {
 
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle(
-        SystemUiOverlayStyle.dark.copyWith(statusBarColor: Colors.white));
 
     return Scaffold(
       body: Container(

@@ -10,9 +10,6 @@ import 'package:inblex_app/helpers/alert_message.dart';
 class LoginPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    SystemChrome.setSystemUIOverlayStyle(
-        SystemUiOverlayStyle.dark.copyWith(statusBarColor: Colors.white));
-
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
@@ -56,7 +53,7 @@ class __FormState extends State<_Form> {
         ),
         CustomInput(
           boxText: 'Contraseña',
-          inputAction: TextInputAction.go,
+          inputAction: TextInputAction.done,
           placeholder: 'Ingresa tú contraseña',
           keyboardType: TextInputType.visiblePassword,
           textController: passCtrl,
@@ -67,7 +64,6 @@ class __FormState extends State<_Form> {
 
         Container(
           width: double.infinity,
-          margin: EdgeInsets.only(right: 25.0, left: 25.0),
           child: ButtonGradient(
             text: 'Ingresar',
             onPressed: () {
@@ -94,6 +90,7 @@ class _ForgotPassword extends StatelessWidget {
     return GestureDetector(
         child: Container(
           width: double.infinity,
+          alignment: Alignment.center,
           margin: EdgeInsets.only(bottom: 30.0),
           child: Text('¿Olvidaste tú contraseña?',
               style: TextStyle(
