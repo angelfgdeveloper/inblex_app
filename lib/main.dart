@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 import 'package:inblex_app/routes/routes.dart';
+import 'package:inblex_app/theme/theme.dart';
  
 void main() => runApp(MyApp());
  
@@ -13,11 +14,7 @@ class MyApp extends StatelessWidget {
         
     return MaterialApp(
       debugShowCheckedModeBanner: false,
-      theme: ThemeData(
-        cursorColor: Colors.green[400],
-        textSelectionColor: Colors.green[200],
-        textSelectionHandleColor: Colors.green[400], 
-      ),
+      theme: myTheme,
       title: 'inblexApp',
       initialRoute: 'splashscreen',
       routes: appRoutes,
