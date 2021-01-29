@@ -28,8 +28,6 @@ class _Pages extends StatelessWidget {
       // physics: BouncingScrollPhysics(),
       physics: NeverScrollableScrollPhysics(),
       children: <Widget>[
-        // Tab1Page(),
-        // Tab2Page(),
         Tab1HomePage(),
         Tab2EventPage(),
         Tab3ProfilePage()

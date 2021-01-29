@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:inblex_app/helpers/alert_message.dart';
+// import 'package:inblex_app/helpers/alert_message.dart';
 
 import 'package:inblex_app/widgets/radial_progress.dart';
 
@@ -10,7 +10,6 @@ class Tab1HomePage extends StatefulWidget {
 }
 
 class _Tab1HomePageState extends State<Tab1HomePage> {
-
   List<String> projects = [
     'Sistema de Información',
     'App Nutrición',
@@ -132,54 +131,55 @@ class _ListTitle extends StatelessWidget {
                       bottomLeft: Radius.circular(10.0)),
                   color: this.color),
             ),
-            Container(
-              // width: MediaQuery.of(context).size.width * 0.75,
-              // color: Colors.red,
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Container(
-                    margin: EdgeInsets.only(top: 25.0, left: 10.0, right: 10.0),
-                    alignment: Alignment.centerLeft,
-                    child: Text('${this.projects}',
-                        style: TextStyle(
-                            fontSize: 16.0, fontWeight: FontWeight.w600)),
-                  ),
-                  Row(
-                    // mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Container(
-                          margin: EdgeInsets.only(
-                              top: 15.0, left: 10.0, right: 10.0),
-                          child: Text('10 de Diciembre del 2022',
-                              style: TextStyle(
-                                  fontSize: 14.0,
-                                  fontWeight: FontWeight.w400,
-                                  color: Colors.grey[500]))),
-                      Container(
-                          margin: EdgeInsets.only(
-                              top: 15.0, left: 10.0, right: 10.0),
-                          padding: EdgeInsets.only(
-                              right: 20.0, left: 20.0, top: 2.0, bottom: 2.0),
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(10.0),
-                            color: Colors.indigo[200],
-                          ),
-                          child: Text('En desarrollo',
-                              style: TextStyle(
-                                  fontSize: 14.0,
-                                  fontWeight: FontWeight.w400,
-                                  color: Colors.grey[100]))),
-                    ],
-                  ),
-                  SizedBox(height: 25.0),
-                ],
+            Expanded(
+              child: Container(
+                margin: EdgeInsets.only(top: 10.0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Container(
+                      margin:
+                          EdgeInsets.only(top: 15.0, left: 10.0, right: 10.0),
+                      alignment: Alignment.centerLeft,
+                      child: Text('${this.projects}',
+                          overflow: TextOverflow.ellipsis,
+                          style: TextStyle(
+                              fontSize: 16.0, fontWeight: FontWeight.w600)),
+                    ),
+
+                    Container(
+                        margin:
+                            EdgeInsets.only(top: 15.0, left: 10.0, right: 10.0),
+                        child: Text('10 de Diciembre del 2022',
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(
+                                fontSize: 14.0,
+                                fontWeight: FontWeight.w400,
+                                color: Colors.grey[500]))),
+
+                    // SizedBox(height: 25.0),
+                  ],
+                ),
               ),
             ),
             Container(
-              margin: EdgeInsets.all(20.0),
-              width: 60.0,
-              height: 60.0,
+                margin: EdgeInsets.only(top: 20.0, left: 10.0, right: 10.0),
+                padding: EdgeInsets.only(right: 10.0, left: 10.0, top: 2.0, bottom: 2.0),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10.0),
+                  color: Colors.indigo[200],
+                ),
+                child: Text('En desarrollo',
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                        fontSize: 13.0,
+                        fontWeight: FontWeight.w400,
+                        color: Colors.grey[100]))),
+
+            Container(
+              margin: EdgeInsets.only(left: 10.0, right: 10.0),
+              width: 70.0,
+              height: 70.0,
               child: CustomRadialProgress(
                   porcentaje: porcentajes, color: Colors.green[600]),
             ),
@@ -187,7 +187,8 @@ class _ListTitle extends StatelessWidget {
         ),
       ),
       onTap: () {
-        showAlertMessage(context, '${this.projects}', 'En desarrollo');
+        // showAlertMessage(context, '${this.projects}', 'En desarrollo');
+        Navigator.pushNamed(context, 'details');
       },
     );
   }
@@ -207,20 +208,20 @@ class CustomRadialProgress extends StatelessWidget {
     return Container(
         // color: Colors.red,
         child: Stack(
-          alignment: Alignment.center,
-          children: [
-            RadialProgress(
-              porcentaje: porcentaje,
-              colorPrimario: this.color,
-              colorSecundario: Colors.green[100],
-              grosorPrimario: 6.0,
-              grosorSecundario: 5.0,
-            ),
-            Text(
-              '$porcentaje %',
-              style: TextStyle(fontSize: 10.0, fontWeight: FontWeight.bold),
-            ),
-          ],
-        ));
+      alignment: Alignment.center,
+      children: [
+        RadialProgress(
+          porcentaje: porcentaje,
+          colorPrimario: this.color,
+          colorSecundario: Colors.green[100],
+          grosorPrimario: 6.0,
+          grosorSecundario: 5.0,
+        ),
+        Text(
+          '$porcentaje %',
+          style: TextStyle(fontSize: 10.0, fontWeight: FontWeight.bold),
+        ),
+      ],
+    ));
   }
 }
