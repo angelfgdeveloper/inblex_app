@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
-import 'package:inblex_app/helpers/alert_message.dart';
+// import 'package:inblex_app/helpers/alert_message.dart';
+import 'package:inblex_app/helpers/alert_message_sprints.dart';
 
 import 'package:inblex_app/widgets/radial_progress.dart';
 
@@ -139,8 +140,13 @@ class _Sprints extends StatelessWidget {
                 splashRadius: 25.0,
                 onPressed: null),
             onTap: () {
-              showAlertMessage(
-                  context, '${sprints[i]}', '${dates[i]}');
+              showAlertMessageSprints(
+                context, 
+              'Excepteur do ea enim labore non Lorem incididunt dolor tempor est incididunt.Excepteur do ea enim labore non Lorem incididunt dolor tempor est incididunt.Excepteur do ea enim labore non Lorem incididunt dolor tempor est incididunt.', 
+              '${dates[i]}',
+              sprints,
+              80
+              );
             },
           );
         });
@@ -174,24 +180,32 @@ class _ProgressProject extends StatelessWidget {
 class _HeaderTitle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    return Row(
-      mainAxisAlignment: MainAxisAlignment.start,
+    return Wrap(
+      spacing: 5.0, 
+      runSpacing: 5.0, 
+      direction: Axis.vertical,
       children: [
-        IconButton(
-            icon: Icon(Icons.arrow_back, color: Colors.black),
-            iconSize: 25.0,
-            splashRadius: 25.0,
-            onPressed: () {
-              Navigator.pop(context);
-            }),
-        SizedBox(
-          width: 10.0,
+        Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            IconButton(
+                icon: Icon(Icons.arrow_back, color: Colors.black),
+                iconSize: 25.0,
+                splashRadius: 25.0,
+                onPressed: () {
+                  Navigator.pop(context);
+                }),
+            SizedBox(
+              width: 10.0,
+            ),
+            Text('Plantilla Sitio Web (SPA)',
+              overflow: TextOverflow.ellipsis,
+                style: TextStyle(
+                    fontSize: 25.0,
+                    color: Colors.black,
+                    fontWeight: FontWeight.w400)),
+          ],
         ),
-        Text('Plantilla Sitio Web (SPA)',
-            style: TextStyle(
-                fontSize: 25.0,
-                color: Colors.black,
-                fontWeight: FontWeight.w400)),
       ],
     );
   }
