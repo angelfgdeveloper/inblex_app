@@ -33,74 +33,78 @@ class _DetailsPageState extends State<DetailsPage> {
     return SafeArea(
         child: Scaffold(
             backgroundColor: Colors.white,
-            body: SingleChildScrollView(
-              physics: BouncingScrollPhysics(),
-              child: Container(
-                padding: EdgeInsets.only(
-                    top: 8.0, left: 16.0, right: 16.0, bottom: 14.0),
-                width: withSize,
-                child: Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    _HeaderTitle(),
-                    _ProgressProject(),
-                    SizedBox(height: 15.0),
-                    Text(
-                      'Descripción Veniam aliquip quis ut qui quis fugiat adipisicing. Non nostrud quis aliquip do et. Non nostrud quis aliquip do et. Non nostrud quis aliquip do et.',
-                      style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 15.0,
-                          fontWeight: FontWeight.w300),
-                      textAlign: TextAlign.justify,
-                    ),
-                    SizedBox(height: 20.0),
-                    Text(
-                      'Sprints',
-                      style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 16.0,
-                          fontWeight: FontWeight.bold),
-                      textAlign: TextAlign.start,
-                    ),
-                    SizedBox(height: 5.0),
-                    _Sprints(sprints: sprints, dates: dates),
-                    SizedBox(height: 5.0),
-                    Text(
-                      'Progreso del proyecto',
-                      style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 16.0,
-                          fontWeight: FontWeight.bold),
-                      textAlign: TextAlign.start,
-                    ),
-                    SizedBox(height: 5.0),
-                    Container(
-                      margin: EdgeInsets.only(top: 10.0, bottom: 10.0),
-                      width: double.infinity,
-                      height: 120.0,
-                      child: CustomRadialProgress(
-                        porcentaje: 73.0, color: Colors.green[600]
+            body: Container(
+              width: double.infinity,
+              height: double.infinity,
+              child: SingleChildScrollView(
+                physics: BouncingScrollPhysics(),
+                child: Container(
+                  padding: EdgeInsets.only(
+                      top: 8.0, left: 16.0, right: 16.0, bottom: 14.0),
+                  width: withSize,
+                  child: Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      _HeaderTitle(),
+                      _ProgressProject(),
+                      SizedBox(height: 15.0),
+                      Text(
+                        'Descripción Veniam aliquip quis ut qui quis fugiat adipisicing. Non nostrud quis aliquip do et. Non nostrud quis aliquip do et. Non nostrud quis aliquip do et.',
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 15.0,
+                            fontWeight: FontWeight.w300),
+                        textAlign: TextAlign.justify,
                       ),
-                    ),
-                    Container(
-                      margin: EdgeInsets.only(top: 10.0, bottom: 10.0),
-                      width: double.infinity,
-                      height: 80.0,
-                      padding: EdgeInsets.only(right: 10.0, left: 10.0, top: 2.0, bottom: 2.0),
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10.0),
-                        color: Colors.greenAccent[200],
+                      SizedBox(height: 20.0),
+                      Text(
+                        'Sprints',
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 16.0,
+                            fontWeight: FontWeight.bold),
+                        textAlign: TextAlign.start,
                       ),
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                        children: [
-                          Text('30 de Septiembre de 2020', style: TextStyle(color: Colors.black, fontSize: 18.0, fontWeight: FontWeight.bold )),
-                          Text('Fecha prevista de entrega', style: TextStyle(color: Colors.black, fontSize: 16.0, fontWeight: FontWeight.w300 )),
-                        ],
+                      SizedBox(height: 5.0),
+                      _Sprints(sprints: sprints, dates: dates),
+                      SizedBox(height: 5.0),
+                      Text(
+                        'Progreso del proyecto',
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 16.0,
+                            fontWeight: FontWeight.bold),
+                        textAlign: TextAlign.start,
                       ),
+                      SizedBox(height: 5.0),
+                      Container(
+                        margin: EdgeInsets.only(top: 10.0, bottom: 10.0),
+                        width: double.infinity,
+                        height: 120.0,
+                        child: CustomRadialProgress(
+                          porcentaje: 73.0, color: Colors.green[600]
+                        ),
+                      ),
+                      Container(
+                        margin: EdgeInsets.only(top: 10.0, bottom: 10.0),
+                        width: double.infinity,
+                        height: 80.0,
+                        padding: EdgeInsets.only(right: 10.0, left: 10.0, top: 2.0, bottom: 2.0),
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(10.0),
+                          color: Colors.greenAccent[200],
+                        ),
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          children: [
+                            Text('30 de Septiembre de 2020', style: TextStyle(color: Colors.black, fontSize: 18.0, fontWeight: FontWeight.bold )),
+                            Text('Fecha prevista de entrega', style: TextStyle(color: Colors.black, fontSize: 16.0, fontWeight: FontWeight.w300 )),
+                          ],
+                        ),
 
-                    ),
-                  ],
+                      ),
+                    ],
+                  ),
                 ),
               ),
             )));

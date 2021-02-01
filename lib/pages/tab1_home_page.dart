@@ -48,13 +48,17 @@ class _Tab1HomePageState extends State<Tab1HomePage> {
     return SafeArea(
         child: Scaffold(
       backgroundColor: Colors.white,
-      body: SingleChildScrollView(
-        physics: BouncingScrollPhysics(),
-        child: Column(
-          children: [
-            _HeaderTitle(),
-            _ListProjects(projects, porcentajes, colors),
-          ],
+      body: Container(
+        width: double.infinity,
+        height: double.infinity,
+        child: SingleChildScrollView(
+          physics: BouncingScrollPhysics(),
+          child: Column(
+            children: [
+              _HeaderTitle(),
+              _ListProjects(projects, porcentajes, colors),
+            ],
+          ),
         ),
       ),
     ));
