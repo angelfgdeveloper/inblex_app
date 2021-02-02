@@ -50,7 +50,9 @@ class _Tab2EventPageState extends State<Tab2EventPage> {
               )),
         ),
         onPressed: () {
-          Navigator.pushNamed(context, 'appointment');
+          setState(() {
+            Navigator.pushNamed(context, 'appointment');
+          });
         },
       ),
     ));
@@ -87,7 +89,25 @@ class _ListEvents extends StatelessWidget {
         shrinkWrap: true,
         itemCount: event.length,
         itemBuilder: (context, i) {
-          return _ListTitle(event[i], color[i]);
+          return Dismissible(
+            key: UniqueKey(),
+            direction: DismissDirection.endToStart,
+            onDismissed: (DismissDirection direction) {
+              // TODO: Eliminar evento agendado
+              event.removeAt(i);
+            },
+            confirmDismiss: (direction) {
+              return Future.value(direction == DismissDirection.endToStart);
+            },
+            background: Container(
+            padding: EdgeInsets.only(right: 20.0),
+            margin: EdgeInsets.symmetric(vertical: 10.0),
+            color: Colors.red,
+            child: Align(
+                alignment: Alignment.centerRight,
+                child: Icon(Icons.delete, color: Colors.white))),
+            child: _ListTitle(event[i], color[i])
+          );
         });
   }
 }
@@ -101,98 +121,84 @@ class _ListTitle extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      child: Dismissible(
-        key: UniqueKey(),
-        direction: DismissDirection.endToStart,
-        onDismissed: (DismissDirection direction) {
-          // TODO: Eliminar evento agendado
-        },
-        background: Container(
-            padding: EdgeInsets.only(right: 20.0),
-            margin: EdgeInsets.symmetric(vertical: 10.0),
-            color: Colors.red,
-            child: Align(
-                alignment: Alignment.centerRight,
-                child: Icon(Icons.delete, color: Colors.white))),
-        child: Container(
-          margin:
-              EdgeInsets.only(top: 10.0, right: 10.0, bottom: 10.0, left: 10.0),
-          // margin: EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
-          width: double.infinity,
-          height: 100.0,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(10.0),
-            color: Colors.white,
-            boxShadow: <BoxShadow>[
-              BoxShadow(
-                  color: Colors.grey[400],
-                  blurRadius: 10.0,
-                  spreadRadius: 1.0,
-                  offset: Offset(1.0, 5.0))
-            ],
-          ),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.start,
-            children: [
-              Container(
-                width: 7.0,
-                decoration: BoxDecoration(
-                    borderRadius: BorderRadius.only(
-                        topLeft: Radius.circular(10.0),
-                        bottomLeft: Radius.circular(10.0)),
-                    color: this.color),
+      child: Container(
+        margin:
+            EdgeInsets.only(top: 10.0, right: 10.0, bottom: 10.0, left: 10.0),
+        // margin: EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
+        width: double.infinity,
+        height: 100.0,
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10.0),
+          color: Colors.white,
+          boxShadow: <BoxShadow>[
+            BoxShadow(
+                color: Colors.grey[400],
+                blurRadius: 10.0,
+                spreadRadius: 1.0,
+                offset: Offset(1.0, 5.0))
+          ],
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          children: [
+            Container(
+              width: 7.0,
+              decoration: BoxDecoration(
+                  borderRadius: BorderRadius.only(
+                      topLeft: Radius.circular(10.0),
+                      bottomLeft: Radius.circular(10.0)),
+                  color: this.color),
+            ),
+            Container(
+              margin: EdgeInsets.symmetric(horizontal: 15.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Text("Diciembre".toUpperCase(),
+                      style:
+                          TextStyle(color: Colors.grey[400], fontSize: 14.0),
+                      textAlign: TextAlign.center,
+                      overflow: TextOverflow.ellipsis),
+                  SizedBox(height: 2.0),
+                  Text("12",
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontSize: 28.0,
+                          fontWeight: FontWeight.w700),
+                      textAlign: TextAlign.center),
+                ],
               ),
-              Container(
-                margin: EdgeInsets.symmetric(horizontal: 15.0),
+            ),
+            Expanded(
+              child: Container(
+                padding: EdgeInsets.symmetric(horizontal: 20.0),
+                alignment: Alignment.centerLeft,
                 child: Column(
                   mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text("Diciembre".toUpperCase(),
-                        style:
-                            TextStyle(color: Colors.grey[400], fontSize: 14.0),
-                        textAlign: TextAlign.center,
+                    Text(event,
+                        style: TextStyle(color: Colors.black, fontSize: 16.0),
+                        textAlign: TextAlign.start,
                         overflow: TextOverflow.ellipsis),
-                    SizedBox(height: 2.0),
-                    Text("12",
+                    SizedBox(height: 6.0),
+                    Text("15:00",
                         style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 28.0,
-                            fontWeight: FontWeight.w700),
-                        textAlign: TextAlign.center),
+                            color: Colors.grey[400], fontSize: 14.0),
+                        textAlign: TextAlign.start),
                   ],
                 ),
               ),
-              Expanded(
-                child: Container(
-                  padding: EdgeInsets.symmetric(horizontal: 20.0),
-                  alignment: Alignment.centerLeft,
-                  child: Column(
-                    mainAxisAlignment: MainAxisAlignment.center,
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Text(event,
-                          style: TextStyle(color: Colors.black, fontSize: 16.0),
-                          textAlign: TextAlign.start,
-                          overflow: TextOverflow.ellipsis),
-                      SizedBox(height: 6.0),
-                      Text("15:00",
-                          style: TextStyle(
-                              color: Colors.grey[400], fontSize: 14.0),
-                          textAlign: TextAlign.start),
-                    ],
-                  ),
-                ),
+            ),
+            Container(
+              margin: EdgeInsets.symmetric(horizontal: 20.0),
+              child: Icon(
+                Icons.info_outline,
+                color: Colors.grey,
+                size: 28.0,
               ),
-              Container(
-                margin: EdgeInsets.symmetric(horizontal: 20.0),
-                child: Icon(
-                  Icons.info_outline,
-                  color: Colors.grey,
-                  size: 28.0,
-                ),
-              )
-            ],
-          ),
+            )
+          ],
         ),
       ),
       onTap: () {

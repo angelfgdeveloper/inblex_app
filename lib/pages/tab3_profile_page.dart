@@ -1,7 +1,21 @@
 import 'package:flutter/material.dart';
 
+import 'package:inblex_app/widgets/button_gradient.dart';
+import 'package:inblex_app/widgets/button_red.dart';
+
 class Tab3ProfilePage extends StatelessWidget {
   final bool _avatar = true;
+
+  final Map<int, String> dataUser = {
+
+    1: 'Empresa',
+    2: '165146849852',
+    3: '618502216',
+    4: 'test_company@test.com',
+    5: 'Apple Computer',
+    6: 'Persona Moral'
+
+  };
 
   @override
   Widget build(BuildContext context) {
@@ -28,12 +42,29 @@ class Tab3ProfilePage extends StatelessWidget {
                     height: 1.5,
                   ),
                   SizedBox(height: 20.0),
-                  _InfoUser(title: 'Nombre de usuario', data: 'Empresa'),
-                  _InfoUser(title: 'ID del Cliente', data: '165146849852'),
-                  _InfoUser(title: 'Teléfono', data: '618502216'),
-                  _InfoUser(title: 'Email', data: 'test_company@test.com'),
-                  _InfoUser(title: 'Empresa', data: 'Apple Computer'),
-                  _InfoUser(title: 'Regime', data: 'Persona Moral'),
+                  _InfoUser(title: 'Nombre de usuario', data: dataUser[1]),
+                  _InfoUser(title: 'ID del Cliente', data: dataUser[2]),
+                  _InfoUser(title: 'Teléfono', data: dataUser[3]),
+                  _InfoUser(title: 'Email', data: dataUser[4]),
+                  _InfoUser(title: 'Empresa', data: dataUser[5]),
+                  _InfoUser(title: 'Regimen', data: dataUser[6]),
+
+                  SizedBox(height: 30.0),
+                  Container(
+                    margin: EdgeInsets.only(right: 40.0, left: 40.0),
+                    child: ButtonGradient(text: 'Editar datos', onPressed: () {
+                      Navigator.pushNamed(context, 'edit', arguments: dataUser);
+                    }),
+                  ),
+
+                  Container(
+                    margin: EdgeInsets.only(right: 40.0, left: 40.0),
+                    child: ButtonRed(text: 'Cerrar sesión', onPressed: () {
+                      Navigator.pushReplacementNamed(context, 'login');
+                    }),
+                  ),
+                  SizedBox(height: 20.0),
+                  
                 ],
               ),
             )),
@@ -79,7 +110,7 @@ class _InfoUser extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(right: 25.0, left: 25.0, bottom: 15.0),
+      margin: EdgeInsets.only(right: 25.0, left: 25.0, bottom: 20.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         children: [

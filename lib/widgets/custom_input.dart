@@ -9,6 +9,8 @@ class CustomInput extends StatelessWidget {
   final TextInputType keyboardType;
   final bool isPassword;
   final bool autoFocus;
+  final bool isEnableInput;
+  final Color colorEnableInput;
 
   const CustomInput({
     @required this.boxText,
@@ -16,7 +18,7 @@ class CustomInput extends StatelessWidget {
     @required this.textController,
     @required this.inputAction,
     this.keyboardType = TextInputType.text,
-    this.isPassword = false, this.autoFocus = false,
+    this.isPassword = false, this.autoFocus = false, this.isEnableInput = true, this.colorEnableInput = Colors.white
   });
 
   @override
@@ -34,7 +36,7 @@ class CustomInput extends StatelessWidget {
           margin: EdgeInsets.only(bottom: 20.0),
           height: 42.0,
           decoration: BoxDecoration(
-            color: Colors.white,
+            color: this.colorEnableInput,
             borderRadius: BorderRadius.circular(10.0),
             boxShadow: [
               BoxShadow(
@@ -52,6 +54,7 @@ class CustomInput extends StatelessWidget {
             textInputAction: this.inputAction,
             keyboardType: this.keyboardType,
             obscureText: this.isPassword,
+            enabled: this.isEnableInput,
             decoration: InputDecoration(
               // prefixIcon: Icon(this.icon),
               focusedBorder: InputBorder.none,

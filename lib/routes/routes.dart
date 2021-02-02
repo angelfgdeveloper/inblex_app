@@ -7,6 +7,8 @@ import 'package:inblex_app/pages/forgot_password_page.dart';
 import 'package:inblex_app/pages/home_page.dart';
 import 'package:inblex_app/pages/details_page.dart';
 import 'package:inblex_app/pages/appointment_page.dart';
+import 'package:inblex_app/pages/edit_datauser_page.dart';
+
 
 final Map<String, Widget Function(BuildContext)> appRoutes = {
 
@@ -17,4 +19,6 @@ final Map<String, Widget Function(BuildContext)> appRoutes = {
   'home': ( _ ) => HomePage(),
   'details': ( _ ) => DetailsPage(),
   'appointment': ( _ ) => AppointmentPage(),
+  'edit': ( _ ) => EditDataUserPage(),
+  
 };
