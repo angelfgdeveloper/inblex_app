@@ -40,7 +40,7 @@ class _DetailsPageState extends State<DetailsPage> {
                 physics: BouncingScrollPhysics(),
                 child: Container(
                   padding: EdgeInsets.only(
-                      top: 8.0, left: 16.0, right: 16.0, bottom: 14.0),
+                      top: 25.0, left: 16.0, right: 16.0, bottom: 14.0),
                   width: withSize,
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,

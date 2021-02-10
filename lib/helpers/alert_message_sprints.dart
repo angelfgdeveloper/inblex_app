@@ -16,7 +16,7 @@ showAlertMessageSprints( BuildContext context, String title, String date, List<S
           physics: BouncingScrollPhysics(),
           child: Container(
             width: double.infinity,
-            height: 440.0,
+            height: 500.0,
             padding: EdgeInsets.all(18.0),
             child: Column(
               crossAxisAlignment: CrossAxisAlignment.start,
@@ -77,6 +77,7 @@ showAlertMessageSprints( BuildContext context, String title, String date, List<S
                       color: Colors.white,
                       textColor: Colors.green,
                       highlightedBorderColor: Colors.transparent,
+                      shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
                       borderSide: BorderSide(
                         color: Colors.transparent
                       ),

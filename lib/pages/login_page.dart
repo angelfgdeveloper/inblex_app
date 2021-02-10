@@ -57,7 +57,7 @@ class __FormState extends State<_Form> {
           placeholder: 'Ingresa tú contraseña',
           keyboardType: TextInputType.visiblePassword,
           textController: passCtrl,
-          isPassword: true,
+          isPassword: false,
         ),
 
         _ForgotPassword(),

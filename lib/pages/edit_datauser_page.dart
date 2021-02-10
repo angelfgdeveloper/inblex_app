@@ -35,7 +35,7 @@ class EditDataUserPage extends StatelessWidget {
           child: SingleChildScrollView(
             physics: BouncingScrollPhysics(),
             child: Container(
-              padding: EdgeInsets.only(top: 8.0, left: 16.0, right: 16.0, bottom: 14.0),
+              padding: EdgeInsets.only(top: 25.0, left: 16.0, right: 16.0, bottom: 14.0),
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [

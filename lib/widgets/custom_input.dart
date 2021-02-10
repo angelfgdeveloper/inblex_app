@@ -11,6 +11,8 @@ class CustomInput extends StatelessWidget {
   final bool autoFocus;
   final bool isEnableInput;
   final Color colorEnableInput;
+  final int isMinLine;
+  final int isMaxLine;
 
   const CustomInput({
     @required this.boxText,
@@ -18,7 +20,8 @@ class CustomInput extends StatelessWidget {
     @required this.textController,
     @required this.inputAction,
     this.keyboardType = TextInputType.text,
-    this.isPassword = false, this.autoFocus = false, this.isEnableInput = true, this.colorEnableInput = Colors.white
+    this.isPassword = false, this.autoFocus = false, this.isEnableInput = true, this.colorEnableInput = Colors.white, 
+    this.isMinLine = 1, this.isMaxLine = 1
   });
 
   @override
@@ -30,11 +33,12 @@ class CustomInput extends StatelessWidget {
           padding: EdgeInsets.only(left: 2.0),
           child: Text(this.boxText, style: TextStyle(fontWeight: FontWeight.w300))
         ),
-        SizedBox(height: 2.0),
+        SizedBox(height: 1.0),
         Container(
-          padding:EdgeInsets.only(top: 5.0, left: 5.0, bottom: 5.0, right: 20.0),
-          margin: EdgeInsets.only(bottom: 20.0),
-          height: 42.0,
+          width: double.infinity,
+          height: this.isMaxLine == 3 ? this.isMaxLine * 25.0 : 50,
+          padding:EdgeInsets.only(top: 1.0, right: 5.0, left: 5.0, bottom: 0.0),
+          margin: EdgeInsets.only(bottom: 15.0),
           decoration: BoxDecoration(
             color: this.colorEnableInput,
             borderRadius: BorderRadius.circular(10.0),
@@ -50,6 +54,8 @@ class CustomInput extends StatelessWidget {
             autofocus: this.autoFocus,
             controller: this.textController,
             autocorrect: false,
+            minLines: this.isMinLine,
+            maxLines: this.isMaxLine,
             style: TextStyle(fontWeight: FontWeight.w200, fontSize: 18.0),
             textInputAction: this.inputAction,
             keyboardType: this.keyboardType,

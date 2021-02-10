@@ -9,7 +9,7 @@ class Logo extends StatelessWidget {
         Center(
           child: Container(
             width: 150.0,
-            margin: EdgeInsets.only(top: 10.0),
+            margin: EdgeInsets.only(top: 25.0),
             child: Column(
               children: [
                 Image(image: AssetImage('assets/images/inblex_splash.png'), fit: BoxFit.cover),

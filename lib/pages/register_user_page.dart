@@ -23,7 +23,7 @@ class _RegisterUserPageState extends State<RegisterUserPage> {
             children: [
               Container(
                   width: double.infinity,
-                  margin: EdgeInsets.only(top: 10.0, right: 25.0, left: 25.0),
+                  margin: EdgeInsets.only(top: 25.0, right: 25.0, left: 25.0),
                   child: Text('Regístrate', style: TextStyle(fontSize: 26.0))),
               _RadioCompany(),
             ],
@@ -316,7 +316,7 @@ class _DataOrg extends StatelessWidget {
             placeholder: 'Nombre del representante',
             keyboardType: TextInputType.name,
             textController: nameCtrl,
-            autoFocus: true,
+            autoFocus: false,
           ),
           CustomInput(
             boxText: 'RFC',

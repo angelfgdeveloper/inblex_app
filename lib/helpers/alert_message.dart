@@ -21,6 +21,7 @@ showAlertMessage( BuildContext context, String titulo, String subtitutlo ) {
             child: Text('Ok'),
             elevation: 5,
             textColor: Colors.blue,
+            shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20.0)),
             onPressed: () => Navigator.pop(context),
           ),
         ],

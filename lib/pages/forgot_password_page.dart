@@ -10,33 +10,53 @@ class ForgotPasswordPage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        backgroundColor: Colors.white,
-        elevation: 1.0,
-        brightness: Brightness.light,
-        iconTheme: IconThemeData(
-          color: Colors.black, //change your color here
-        ),
-        title: Text('Recupera tu cuenta', style: TextStyle(color: Colors.black),),
-        centerTitle: true,
-      ),
-      body: SingleChildScrollView(
-        physics: BouncingScrollPhysics(),
-        child: Container(
-          color: Colors.white,
+    return SafeArea(
+      child: Scaffold(
+        body: SingleChildScrollView(
+          physics: BouncingScrollPhysics(),
           child: Container(
-            margin: EdgeInsets.only(top: 20.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.start,
-              children: [
-                Center(child: Text('Ingresa un correo electrónico válido', style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.w300))),
-                _Form(),
-              ],
+            color: Colors.white,
+            child: Container(
+              margin: EdgeInsets.only(top: 25.0),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.start,
+                children: [
+                  _HeaderTitle(),
+                  SizedBox(height: 10.0),
+                  Center(child: Text('Ingresa un correo electrónico válido', style: TextStyle(fontSize: 16.0, fontWeight: FontWeight.w300))),
+                  _Form(),
+                ],
+              ),
             ),
           ),
         ),
       ),
+    );
+  }
+}
+
+class _HeaderTitle extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+      mainAxisAlignment: MainAxisAlignment.start,
+      children: [
+        SizedBox(width: 10.0),
+        IconButton(
+            icon: Icon(Icons.arrow_back, color: Colors.black),
+            iconSize: 25.0,
+            splashRadius: 25.0,
+            onPressed: () {
+              Navigator.pop(context);
+            }),
+        SizedBox(width: 10.0),
+        Text('Recupera tu cuenta',
+          overflow: TextOverflow.ellipsis,
+            style: TextStyle(
+                fontSize: 25.0,
+                color: Colors.black,
+                fontWeight: FontWeight.w400)),
+      ],
     );
   }
 }

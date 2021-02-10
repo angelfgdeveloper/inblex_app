@@ -81,7 +81,7 @@ class _Avatar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: EdgeInsets.only(top: 20.0, bottom: 15.0),
+      margin: EdgeInsets.only(top: 30.0, bottom: 15.0),
       child: CircleAvatar(
         backgroundColor: Colors.green[400],
         radius: 70.0,
