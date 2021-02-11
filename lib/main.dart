@@ -1,15 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:inblex_app/models/get_hour_model.dart';
-
-import 'package:inblex_app/routes/routes.dart';
-import 'package:inblex_app/theme/theme.dart';
-
-import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:inblex_app/shared/shared_preferences_manager.dart';
 import 'package:provider/provider.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+
+import 'package:inblex_app/theme/theme.dart';
+import 'package:inblex_app/routes/routes.dart';
+
+import 'package:inblex_app/models/get_hour_model.dart';
+import 'package:inblex_app/services/auth_service.dart';
  
-void main() {
+void main() async {
   Provider.debugCheckInvalidValueType = null;
+  WidgetsFlutterBinding.ensureInitialized();
+  final prefs = new SharedPreferencesManager();
+  await prefs.initPrefs();
   runApp(MyApp()); 
 }
  
@@ -22,6 +27,7 @@ class MyApp extends StatelessWidget {
     return MultiProvider(
       providers: [
         Provider(create: (_) => HourModel()),
+        Provider(create: (_) => AuthService()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

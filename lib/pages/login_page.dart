@@ -1,15 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
+import 'package:inblex_app/helpers/alert_message.dart';
+import 'package:inblex_app/services/auth_service.dart';
+
 import 'package:inblex_app/widgets/logo.dart';
 import 'package:inblex_app/widgets/custom_input.dart';
 import 'package:inblex_app/widgets/button_gradient.dart';
+import 'package:provider/provider.dart';
 
-import 'package:inblex_app/helpers/alert_message.dart';
 
 class LoginPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
+
     return Scaffold(
       backgroundColor: Colors.white,
       body: SafeArea(
@@ -30,6 +34,7 @@ class LoginPage extends StatelessWidget {
 }
 
 class _Form extends StatefulWidget {
+
   @override
   __FormState createState() => __FormState();
 }
@@ -39,7 +44,9 @@ class __FormState extends State<_Form> {
   final passCtrl = TextEditingController();
 
   @override
-  Widget build(BuildContext context) {
+  Widget build(BuildContext context) { 
+    final authService = Provider.of<AuthService>(context);
+   
     return Container(
       margin: EdgeInsets.only(top: 25.0, right: 25.0, left: 25.0),
       child: Column(children: [
@@ -57,7 +64,7 @@ class __FormState extends State<_Form> {
           placeholder: 'Ingresa tú contraseña',
           keyboardType: TextInputType.visiblePassword,
           textController: passCtrl,
-          isPassword: false,
+          isPassword: true,
         ),
 
         _ForgotPassword(),
@@ -66,12 +73,12 @@ class __FormState extends State<_Form> {
           width: double.infinity,
           child: ButtonGradient(
             text: 'Ingresar',
-            onPressed: () {
-              // TODO: Validar usuario
+            onPressed: authService.auth ? null : () async {
+
               FocusScope.of(context).unfocus();
-              if ( emailCtrl.text.isNotEmpty && passCtrl.text.isNotEmpty ) {
-                print(emailCtrl.text);
-                print(passCtrl.text);
+
+              final loginOk = await authService.login(emailCtrl.text.trim(), passCtrl.text.trim());
+              if (loginOk) {
                 Navigator.pushReplacementNamed(context, 'home');
               } else {
                 showAlertMessage(context, 'Inicio de sesión incorrecto', 'Por favor, revise sus credenciales nuevamente');

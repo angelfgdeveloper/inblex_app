@@ -1,4 +1,8 @@
 import 'package:flutter/material.dart';
+// import 'package:provider/provider.dart';
+// import 'package:inblex_app/services/auth_service.dart';
+
+import 'package:inblex_app/shared/shared_preferences_manager.dart';
 
 import 'package:inblex_app/widgets/button_gradient.dart';
 import 'package:inblex_app/widgets/button_red.dart';
@@ -19,6 +23,8 @@ class Tab3ProfilePage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // final authProvider = Provider.of<AuthService>(context);
+
     return SafeArea(
       child: Scaffold(
         backgroundColor: Colors.white,
@@ -31,7 +37,7 @@ class Tab3ProfilePage extends StatelessWidget {
                 children: [
                   _Avatar(avatarUser: _avatar),
                   Text(
-                    'Empresa',
+                    /*(authProvider.user.username.toString() == null && authProvider.user.username.toString().isEmpty) ?*/ dataUser[1] /*: authProvider.user.username*/,
                     style:
                         TextStyle(fontSize: 28.0, fontWeight: FontWeight.w600),
                     overflow: TextOverflow.ellipsis,
@@ -42,10 +48,10 @@ class Tab3ProfilePage extends StatelessWidget {
                     height: 1.5,
                   ),
                   SizedBox(height: 20.0),
-                  _InfoUser(title: 'Nombre de usuario', data: dataUser[1]),
-                  _InfoUser(title: 'ID del Cliente', data: dataUser[2]),
+                  _InfoUser(title: 'Nombre de usuario', data: /*(authProvider.user.username.toString() == null && authProvider.user.username.toString().isEmpty) ?*/ dataUser[1] /*: authProvider.user.username*/),
+                  _InfoUser(title: 'ID del Cliente', data: /*authProvider.user.id.toString() == null ?*/ dataUser[2] /*: authProvider.user.id.toString()*/),
                   _InfoUser(title: 'Teléfono', data: dataUser[3]),
-                  _InfoUser(title: 'Email', data: dataUser[4]),
+                  _InfoUser(title: 'Email', data: /*authProvider.user.username == null ?*/ dataUser[4] /*: '${authProvider.user.username.toLowerCase()}@inblex.com'*/),
                   _InfoUser(title: 'Empresa', data: dataUser[5]),
                   _InfoUser(title: 'Regimen', data: dataUser[6]),
 
@@ -60,6 +66,8 @@ class Tab3ProfilePage extends StatelessWidget {
                   Container(
                     margin: EdgeInsets.only(right: 40.0, left: 40.0),
                     child: ButtonRed(text: 'Cerrar sesión', onPressed: () {
+                      final pref = SharedPreferencesManager();
+                      pref.token = '';
                       Navigator.pushReplacementNamed(context, 'login');
                     }),
                   ),
