@@ -1,14 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:inblex_app/shared/shared_preferences_manager.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:inblex_app/shared/shared_preferences_manager.dart';
 
 import 'package:inblex_app/theme/theme.dart';
 import 'package:inblex_app/routes/routes.dart';
 
 import 'package:inblex_app/models/get_hour_model.dart';
 import 'package:inblex_app/services/auth_service.dart';
+import 'package:inblex_app/services/list_project_user_service.dart';
  
 void main() async {
   Provider.debugCheckInvalidValueType = null;
@@ -28,6 +29,7 @@ class MyApp extends StatelessWidget {
       providers: [
         Provider(create: (_) => HourModel()),
         Provider(create: (_) => AuthService()),
+        Provider(create: (_) => ListProjectUserService()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,

@@ -1,8 +1,8 @@
 import 'package:flutter/material.dart';
-
-// import 'package:inblex_app/helpers/alert_message.dart';
-
+import 'package:inblex_app/models/project_user_response.dart';
+import 'package:inblex_app/services/list_project_user_service.dart';
 import 'package:inblex_app/widgets/radial_progress.dart';
+import 'package:provider/provider.dart';
 
 class Tab1HomePage extends StatefulWidget {
   @override
@@ -10,41 +10,10 @@ class Tab1HomePage extends StatefulWidget {
 }
 
 class _Tab1HomePageState extends State<Tab1HomePage> {
-  List<String> projects = [
-    'Sistema de Información',
-    'App Nutrición',
-    'inblexApp',
-    'QuinielaApp',
-    'Página inblex',
-    'Api-JWT (Seguridad)',
-    'Strava Capital',
-    'UberBandsApp',
-  ];
-
-  List<int> porcentajes = [
-    100,
-    53,
-    78,
-    18,
-    88,
-    17,
-    69,
-    0,
-  ];
-
-  final List<Color> colors = [
-    Colors.pink,
-    Colors.purple,
-    Colors.blue,
-    Colors.blueGrey,
-    Colors.orange,
-    Colors.black26,
-    Colors.yellowAccent,
-    Colors.red,
-  ];
-
+ 
   @override
   Widget build(BuildContext context) {
+
     return SafeArea(
         child: Scaffold(
       backgroundColor: Colors.white,
@@ -56,7 +25,7 @@ class _Tab1HomePageState extends State<Tab1HomePage> {
           child: Column(
             children: [
               _HeaderTitle(),
-              _ListProjects(projects, porcentajes, colors),
+              _ListProjects(),
             ],
           ),
         ),
@@ -81,30 +50,54 @@ class _HeaderTitle extends StatelessWidget {
 }
 
 class _ListProjects extends StatelessWidget {
-  final List<String> projects;
-  final List<int> porcentajes;
-  final List<Color> colors;
 
-  _ListProjects(this.projects, this.porcentajes, this.colors);
+   final List<Color> colors = [
+    Colors.pink,
+    Colors.purple,
+    Colors.blue,
+    Colors.blueGrey,
+    Colors.orange,
+    Colors.black26,
+    Colors.yellowAccent,
+    Colors.red,
+  ];
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-        physics: NeverScrollableScrollPhysics(),
-        shrinkWrap: true,
-        itemCount: projects.length,
-        itemBuilder: (context, i) {
-          return _ListTitle(projects[i], porcentajes[i].toDouble(), colors[i]);
-        });
+
+    final projectUserService = Provider.of<ListProjectUserService>(context);
+
+    return FutureBuilder(
+      future: projectUserService.getListProjectUser(),
+      builder: (BuildContext context, AsyncSnapshot<List<ProjectResponse>> snapshot) { 
+      
+      if ( snapshot.hasData ) {
+      return ListView.builder(
+          physics: NeverScrollableScrollPhysics(),
+          shrinkWrap: true,
+          itemCount: snapshot.data.length,
+          itemBuilder: (context, i) {
+            ProjectResponse project = snapshot.data[i];
+            return _ListTitle(project, colors[i]);
+          });
+        } else {
+          return Container(
+            height: 400.0,
+            child: Center(
+              child: CircularProgressIndicator(),
+            ),
+          );
+        }
+       },
+    );
   }
 }
 
 class _ListTitle extends StatelessWidget {
-  final String projects;
-  final double porcentajes;
+  final ProjectResponse project;
   final Color color;
 
-  _ListTitle(this.projects, this.porcentajes, this.color);
+  _ListTitle(this.project, this.color);
 
   @override
   Widget build(BuildContext context) {
@@ -145,7 +138,7 @@ class _ListTitle extends StatelessWidget {
                       margin:
                           EdgeInsets.only(top: 15.0, left: 10.0, right: 10.0),
                       alignment: Alignment.centerLeft,
-                      child: Text('${this.projects}',
+                      child: Text('${this.project.nombre}',
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(
                               fontSize: 16.0, fontWeight: FontWeight.w600)),
@@ -154,7 +147,7 @@ class _ListTitle extends StatelessWidget {
                     Container(
                         margin:
                             EdgeInsets.only(top: 15.0, left: 10.0, right: 10.0),
-                        child: Text('10 de Diciembre del 2022',
+                        child: Text('${this.project.fechaEstimada}',
                             overflow: TextOverflow.ellipsis,
                             style: TextStyle(
                                 fontSize: 14.0,
@@ -173,7 +166,7 @@ class _ListTitle extends StatelessWidget {
                   borderRadius: BorderRadius.circular(10.0),
                   color: Colors.indigo[200],
                 ),
-                child: Text('En desarrollo',
+                child: Text((this.project.estado == 1) ? 'En desarrollo' : 'En pausa',
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
                         fontSize: 13.0,
@@ -185,7 +178,7 @@ class _ListTitle extends StatelessWidget {
               width: 70.0,
               height: 70.0,
               child: CustomRadialProgress(
-                  porcentaje: porcentajes, color: Colors.green[600]),
+                  porcentaje: this.project.progresoTotal.toDouble(), color: Colors.green[600]),
             ),
           ],
         ),
