@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:inblex_app/models/project_show_response.dart';
 // import 'package:flutter/services.dart';
 
-showAlertMessageSprints( BuildContext context, String title, String date, List<String> obj, int porcent ) {
+showAlertMessageSprints( BuildContext context, String title, String date, List<Sprint> obj, int porcent ) {
 
     final titleStyle = TextStyle(color: Colors.black, fontSize: 16.0, fontWeight: FontWeight.w800);
     return showDialog(
@@ -44,7 +45,7 @@ showAlertMessageSprints( BuildContext context, String title, String date, List<S
                     itemBuilder: (context, i) {  
                       return ListTile(
                         title: Transform(transform: Matrix4.translationValues(-16, 0.0, 0.0),
-                        child: Text('${obj[i]} Proident dolor reprehenderit cillum dolore. Proident dolor reprehenderit cillum dolore.')),
+                        child: Text('${i + 1} Proident dolor reprehenderit cillum dolore. Proident dolor reprehenderit cillum dolore.')),
                         leading: Icon(Icons.pause_circle_filled, color: Colors.yellow,),
                         onTap: (){},
                       );

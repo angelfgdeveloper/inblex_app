@@ -1,26 +1,23 @@
 import 'package:flutter/material.dart';
+import 'package:inblex_app/widgets/custom_radial_progress.dart';
+import 'package:provider/provider.dart';
 
-// import 'package:inblex_app/helpers/alert_message.dart';
 import 'package:inblex_app/helpers/alert_message_sprints.dart';
+import 'package:inblex_app/services/list_project_user_service.dart';
 
-import 'package:inblex_app/widgets/radial_progress.dart';
+import 'package:inblex_app/models/project_show_response.dart';
 
 
-class DetailsPage extends StatefulWidget {
+class DetailsPage extends StatelessWidget {
 
-  @override
-  _DetailsPageState createState() => _DetailsPageState();
-}
-
-class _DetailsPageState extends State<DetailsPage> {
-  List<String> sprints = [
+  final List<String> sprints = [
     'Sprint 1',
     'Sprint 2',
     'Sprint 3',
     'Sprint 4'
   ];
 
-  List<String> dates = [
+  final List<String> dates = [
     '30 de Julio - 06 de Agosto de 2020',
     '14 de Agosto - 20 de Agosto de 2020',
     '21 de Agosto - 05 de Septiembre de 2020',
@@ -30,6 +27,9 @@ class _DetailsPageState extends State<DetailsPage> {
   @override
   Widget build(BuildContext context) {
     final withSize = MediaQuery.of(context).size.width;
+    final int id = ModalRoute.of(context).settings.arguments;
+    final projectUserService = Provider.of<ListProjectUserService>(context);
+
     return SafeArea(
         child: Scaffold(
             backgroundColor: Colors.white,
@@ -38,73 +38,93 @@ class _DetailsPageState extends State<DetailsPage> {
               height: double.infinity,
               child: SingleChildScrollView(
                 physics: BouncingScrollPhysics(),
-                child: Container(
-                  padding: EdgeInsets.only(
-                      top: 25.0, left: 16.0, right: 16.0, bottom: 14.0),
-                  width: withSize,
-                  child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      _HeaderTitle(),
-                      _ProgressProject(),
-                      SizedBox(height: 15.0),
-                      Text(
-                        'Descripción Veniam aliquip quis ut qui quis fugiat adipisicing. Non nostrud quis aliquip do et. Non nostrud quis aliquip do et. Non nostrud quis aliquip do et.',
-                        style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 15.0,
-                            fontWeight: FontWeight.w300),
-                        textAlign: TextAlign.justify,
-                      ),
-                      SizedBox(height: 20.0),
-                      Text(
-                        'Sprints',
-                        style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 16.0,
-                            fontWeight: FontWeight.bold),
-                        textAlign: TextAlign.start,
-                      ),
-                      SizedBox(height: 5.0),
-                      _Sprints(sprints: sprints, dates: dates),
-                      SizedBox(height: 5.0),
-                      Text(
-                        'Progreso del proyecto',
-                        style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 16.0,
-                            fontWeight: FontWeight.bold),
-                        textAlign: TextAlign.start,
-                      ),
-                      SizedBox(height: 5.0),
-                      Container(
-                        margin: EdgeInsets.only(top: 10.0, bottom: 10.0),
-                        width: double.infinity,
-                        height: 120.0,
-                        child: CustomRadialProgress(
-                          porcentaje: 73.0, color: Colors.green[600]
-                        ),
-                      ),
-                      Container(
-                        margin: EdgeInsets.only(top: 10.0, bottom: 10.0),
-                        width: double.infinity,
-                        height: 80.0,
-                        padding: EdgeInsets.only(right: 10.0, left: 10.0, top: 2.0, bottom: 2.0),
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(10.0),
-                          color: Colors.greenAccent[200],
-                        ),
+                child: FutureBuilder(
+                  future: projectUserService.getOneProjectUser(id),
+                  builder: (BuildContext context, AsyncSnapshot<ProjectShowResponse> snapshot) {
+
+                    if ( snapshot.hasData ) {
+                      return Container(
+                        padding: EdgeInsets.only(top: 25.0, left: 16.0, right: 16.0, bottom: 14.0),
+                        width: withSize,
                         child: Column(
-                          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                          crossAxisAlignment: CrossAxisAlignment.start,
                           children: [
-                            Text('30 de Septiembre de 2020', style: TextStyle(color: Colors.black, fontSize: 18.0, fontWeight: FontWeight.bold )),
-                            Text('Fecha prevista de entrega', style: TextStyle(color: Colors.black, fontSize: 16.0, fontWeight: FontWeight.w300 )),
+                            _HeaderTitle(title: snapshot.data.nombre),
+                            _ProgressProject(status: snapshot.data.estado),
+                            SizedBox(height: 15.0),
+                            Text(
+                              snapshot.data.descripcion,
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 15.0,
+                                  fontWeight: FontWeight.w300),
+                              textAlign: TextAlign.justify,
+                            ),
+                            SizedBox(height: 20.0),
+                            Text(
+                              'Sprints',
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 16.0,
+                                  fontWeight: FontWeight.bold),
+                              textAlign: TextAlign.start,
+                            ),
+                            SizedBox(height: 5.0),
+                            _Sprints(sprints: snapshot.data.sprints),
+                            SizedBox(height: 5.0),
+                            Text(
+                              'Progreso del proyecto',
+                              style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 16.0,
+                                  fontWeight: FontWeight.bold),
+                              textAlign: TextAlign.start,
+                            ),
+                            SizedBox(height: 5.0),
+                            Container(
+                              margin: EdgeInsets.only(top: 10.0, bottom: 10.0),
+                              width: double.infinity,
+                              height: 120.0,
+                              child: CustomRadialProgress(
+                                porcent: snapshot.data.progresoTotal.toDouble(),
+                                color: Colors.green[600],
+                                grosorPrimary: 12.0,
+                                grosorSecundary: 10.0,
+                                textSize: 24.0,
+                              )
+                            ),
+                            Container(
+                              margin: EdgeInsets.only(top: 10.0, bottom: 10.0),
+                              width: double.infinity,
+                              height: 80.0,
+                              padding: EdgeInsets.only(right: 10.0, left: 10.0, top: 2.0, bottom: 2.0),
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(10.0),
+                                color: Colors.greenAccent[200],
+                              ),
+                              child: Column(
+                                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                                children: [
+                                  Text(snapshot.data.fechaEstimada, style: TextStyle(color: Colors.black, fontSize: 18.0, fontWeight: FontWeight.bold )),
+                                  Text('Fecha prevista de entrega', style: TextStyle(color: Colors.black, fontSize: 16.0, fontWeight: FontWeight.w300 )),
+                                ],
+                              ),
+
+                            ),
                           ],
                         ),
-
-                      ),
-                    ],
-                  ),
+                      );
+                      
+                    } else {
+                      return Container(
+                        width: double.infinity,
+                        height: MediaQuery.of(context).size.height * 0.8,
+                        child: Center(
+                          child: CircularProgressIndicator(),
+                        ),
+                      );
+                    }
+                  },
                 ),
               ),
             )));
@@ -112,14 +132,12 @@ class _DetailsPageState extends State<DetailsPage> {
 }
 
 class _Sprints extends StatelessWidget {
-  const _Sprints({
-    Key key,
-    @required this.sprints,
-    @required this.dates,
-  }) : super(key: key);
 
-  final List<String> sprints;
-  final List<String> dates;
+  final List<Sprint> sprints;
+
+  const _Sprints({
+    @required this.sprints,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -129,11 +147,11 @@ class _Sprints extends StatelessWidget {
         itemCount: sprints.length,
         itemBuilder: (context, i) {
           return ListTile(
-            title: Text('${sprints[i]}'),
+            title: Text('Sprint: ${i + 1}'),
             leading: CircleAvatar(
               backgroundColor: Colors.greenAccent,
             ),
-            subtitle: Text('${dates[i]}'),
+            subtitle: Text('${sprints[i].fechaInicio} - ${sprints[i].fechaFin}'),
             trailing: IconButton(
                 icon: Icon(
                   Icons.arrow_forward_ios,
@@ -147,9 +165,9 @@ class _Sprints extends StatelessWidget {
               showAlertMessageSprints(
                 context, 
               'Excepteur do ea enim labore non Lorem incididunt dolor tempor est incididunt.Excepteur do ea enim labore non Lorem incididunt dolor tempor est incididunt.Excepteur do ea enim labore non Lorem incididunt dolor tempor est incididunt.', 
-              '${dates[i]}',
+              '${sprints[i].fechaInicio} - ${sprints[i].fechaFin}',
               sprints,
-              80
+              sprints[i].progreso
               );
             },
           );
@@ -158,9 +176,11 @@ class _Sprints extends StatelessWidget {
 }
 
 class _ProgressProject extends StatelessWidget {
+  final int status;
+
   const _ProgressProject({
-    Key key,
-  }) : super(key: key);
+    @required this.status,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -172,7 +192,7 @@ class _ProgressProject extends StatelessWidget {
           borderRadius: BorderRadius.circular(10.0),
           color: Colors.indigo[200],
         ),
-        child: Text('En desarrollo',
+        child: Text((this.status == 1) ? 'En desarrollo' : 'En pausa',
             overflow: TextOverflow.ellipsis,
             style: TextStyle(
                 fontSize: 16.0,
@@ -182,6 +202,10 @@ class _ProgressProject extends StatelessWidget {
 }
 
 class _HeaderTitle extends StatelessWidget {
+  final String title;
+
+  const _HeaderTitle({Key key, @required this.title}) : super(key: key);
+
   @override
   Widget build(BuildContext context) {
     return Wrap(
@@ -202,7 +226,7 @@ class _HeaderTitle extends StatelessWidget {
             SizedBox(
               width: 10.0,
             ),
-            Text('Plantilla Sitio Web (SPA)',
+            Text(this.title,
               overflow: TextOverflow.ellipsis,
                 style: TextStyle(
                     fontSize: 25.0,
@@ -215,34 +239,3 @@ class _HeaderTitle extends StatelessWidget {
   }
 }
 
-class CustomRadialProgress extends StatelessWidget {
-  final Color color;
-  final double porcentaje;
-
-  const CustomRadialProgress({
-    @required this.porcentaje,
-    @required this.color,
-  });
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-        // color: Colors.red,
-        child: Stack(
-      alignment: Alignment.center,
-      children: [
-        RadialProgress(
-          porcentaje: porcentaje,
-          colorPrimario: this.color,
-          colorSecundario: Colors.green[100],
-          grosorPrimario: 12.0,
-          grosorSecundario: 10.0,
-        ),
-        Text(
-          '$porcentaje %',
-          style: TextStyle(fontSize: 24.0, fontWeight: FontWeight.bold),
-        ),
-      ],
-    ));
-  }
-}
