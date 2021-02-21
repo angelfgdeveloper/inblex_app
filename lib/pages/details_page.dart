@@ -1,28 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:inblex_app/widgets/custom_radial_progress.dart';
 import 'package:provider/provider.dart';
 
-import 'package:inblex_app/helpers/alert_message_sprints.dart';
 import 'package:inblex_app/services/list_project_user_service.dart';
 
+import 'package:inblex_app/helpers/calendar_modific.dart';
+import 'package:inblex_app/helpers/alert_message_sprints.dart';
 import 'package:inblex_app/models/project_show_response.dart';
+import 'package:inblex_app/widgets/custom_radial_progress.dart';
 
 
 class DetailsPage extends StatelessWidget {
-
-  final List<String> sprints = [
-    'Sprint 1',
-    'Sprint 2',
-    'Sprint 3',
-    'Sprint 4'
-  ];
-
-  final List<String> dates = [
-    '30 de Julio - 06 de Agosto de 2020',
-    '14 de Agosto - 20 de Agosto de 2020',
-    '21 de Agosto - 05 de Septiembre de 2020',
-    '12 de Septiembre - 06 de Noviembre de 2020'
-  ];
 
   @override
   Widget build(BuildContext context) {
@@ -105,7 +92,7 @@ class DetailsPage extends StatelessWidget {
                               child: Column(
                                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                                 children: [
-                                  Text(snapshot.data.fechaEstimada, style: TextStyle(color: Colors.black, fontSize: 18.0, fontWeight: FontWeight.bold )),
+                                  Text('${ dateModific(context, snapshot.data.fechaEstimada) }', style: TextStyle(color: Colors.black, fontSize: 18.0, fontWeight: FontWeight.bold )),
                                   Text('Fecha prevista de entrega', style: TextStyle(color: Colors.black, fontSize: 16.0, fontWeight: FontWeight.w300 )),
                                 ],
                               ),
@@ -151,7 +138,7 @@ class _Sprints extends StatelessWidget {
             leading: CircleAvatar(
               backgroundColor: Colors.greenAccent,
             ),
-            subtitle: Text('${sprints[i].fechaInicio} - ${sprints[i].fechaFin}'),
+            subtitle: Text('${ dateModific(context, sprints[i].fechaInicio) } - ${ dateModific(context, sprints[i].fechaFin) }'),
             trailing: IconButton(
                 icon: Icon(
                   Icons.arrow_forward_ios,
@@ -164,10 +151,7 @@ class _Sprints extends StatelessWidget {
             onTap: () {
               showAlertMessageSprints(
                 context, 
-              'Excepteur do ea enim labore non Lorem incididunt dolor tempor est incididunt.Excepteur do ea enim labore non Lorem incididunt dolor tempor est incididunt.Excepteur do ea enim labore non Lorem incididunt dolor tempor est incididunt.', 
-              '${sprints[i].fechaInicio} - ${sprints[i].fechaFin}',
-              sprints,
-              sprints[i].progreso
+                sprints[i].id
               );
             },
           );
@@ -184,20 +168,44 @@ class _ProgressProject extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+
+    String statusProject = '';
+    Color color;
+    Color textColor = Colors.grey[100];
+
+    if (status == 0) {
+      statusProject = 'En pausa';
+      color = Colors.yellow;
+      textColor = Colors.black;
+    } else if (status == 1) {
+      statusProject = 'En desarrollo';
+      color = Colors.blue;
+    } else if (status == 2) {
+      statusProject = 'Terminado';
+      color = Colors.green[500];
+    } else if (status == 3) {
+      statusProject = 'Cancelado';
+      color = Colors.red[600];
+    } else {
+      statusProject = 'Comunicate pronto';
+      color = Colors.red[700];
+    }
+
     return Container(
         margin: EdgeInsets.only(top: 5.0),
         padding:
             EdgeInsets.only(right: 20.0, left: 20.0, top: 4.0, bottom: 4.0),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10.0),
-          color: Colors.indigo[200],
+          color: color,
         ),
-        child: Text((this.status == 1) ? 'En desarrollo' : 'En pausa',
+        child: Text(statusProject,
             overflow: TextOverflow.ellipsis,
             style: TextStyle(
                 fontSize: 16.0,
                 fontWeight: FontWeight.w400,
-                color: Colors.grey[100])));
+                color: textColor))
+    );
   }
 }
 

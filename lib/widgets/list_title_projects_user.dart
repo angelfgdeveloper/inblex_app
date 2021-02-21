@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+
+import 'package:inblex_app/helpers/calendar_modific.dart';
+import 'package:inblex_app/models/project_user_response.dart';
+
 import 'package:inblex_app/widgets/custom_radial_progress.dart';
 
-import 'package:inblex_app/models/project_user_response.dart';
 
 class ListTitleProjectUser extends StatelessWidget {
   final ProjectResponse project;
@@ -60,7 +63,7 @@ class ListTitleProjectUser extends StatelessWidget {
                     Container(
                         margin:
                             EdgeInsets.only(top: 15.0, left: 10.0, right: 10.0),
-                        child: Text('${this.project.fechaEstimada}',
+                        child: Text('${ dateModific(context, this.project.fechaEstimada) }',
                             overflow: TextOverflow.ellipsis,
                             style: TextStyle(
                                 fontSize: 14.0,
@@ -72,20 +75,7 @@ class ListTitleProjectUser extends StatelessWidget {
                 ),
               ),
             ),
-            Container(
-                margin: EdgeInsets.only(top: 20.0, left: 10.0, right: 10.0),
-                padding: EdgeInsets.only(right: 10.0, left: 10.0, top: 2.0, bottom: 2.0),
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(10.0),
-                  color: Colors.indigo[200],
-                ),
-                child: Text((this.project.estado == 1) ? 'En desarrollo' : 'En pausa',
-                    overflow: TextOverflow.ellipsis,
-                    style: TextStyle(
-                        fontSize: 13.0,
-                        fontWeight: FontWeight.w400,
-                        color: Colors.grey[100]))),
-
+            _statusProject(this.project.estado),
             Container(
               margin: EdgeInsets.only(left: 10.0, right: 10.0),
               width: 70.0,
@@ -100,10 +90,49 @@ class ListTitleProjectUser extends StatelessWidget {
       ),
       onTap: () {
         final id = this.project.id;
-        // showAlertMessage(context, '${this.projects}', 'En desarrollo');
         Navigator.pushNamed(context, 'details', arguments: id);
       },
     );
+  }
+
+  Widget _statusProject( int status ) {
+
+    String statusProject = '';
+    Color color;
+    Color textColor = Colors.grey[100];
+
+    if (status == 0) {
+      statusProject = 'En pausa';
+      color = Colors.yellow;
+      textColor = Colors.black;
+    } else if (status == 1) {
+      statusProject = 'En desarrollo';
+      color = Colors.blue;
+    } else if (status == 2) {
+      statusProject = 'Terminado';
+      color = Colors.green[500];
+    } else if (status == 3) {
+      statusProject = 'Cancelado';
+      color = Colors.red[600];
+    } else {
+      statusProject = 'Comunicate pronto';
+      color = Colors.red[700];
+    }
+
+    return Container(
+      margin: EdgeInsets.only(top: 20.0, left: 10.0, right: 10.0),
+      padding: EdgeInsets.only(right: 10.0, left: 10.0, top: 2.0, bottom: 2.0),
+      decoration: BoxDecoration(
+        borderRadius: BorderRadius.circular(10.0),
+        color: color,
+      ),
+      child: Text(statusProject,
+          overflow: TextOverflow.ellipsis,
+          style: TextStyle(
+              fontSize: 13.0,
+              fontWeight: FontWeight.w400,
+              color: textColor)));
+
   }
 }
 

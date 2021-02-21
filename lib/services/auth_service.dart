@@ -41,7 +41,7 @@ class AuthService with ChangeNotifier {
     this.auth = false;
 
     if ( resp.statusCode == 200 ) {
-      final loginResponse = loginResponseFromJson(resp.body);
+      final loginResponse = loginResponseFromJson(utf8.decode(resp.bodyBytes));
       this.user = loginResponse.user;
 
       // Guardar token  en lugar seguro
