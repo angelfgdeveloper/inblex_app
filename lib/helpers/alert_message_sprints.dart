@@ -133,28 +133,44 @@ showAlertMessageSprints(BuildContext context, int id) {
 
 Widget _status( int status) {
   if (status == 0) {
-    return Icon(
-      Icons.pause_circle_outline_outlined,
-      color: Colors.red,
-      size: 30.0,
+    return IconButton(
+      onPressed: null,
+      icon: Icon(
+        Icons.pause_circle_outline_outlined,
+        color: Colors.red,
+        size: 30.0,
+      ),
+      tooltip: 'Pausado',
     );
   } else if (status == 1) {
-    return Icon(
-      Icons.play_circle_outline_outlined,
-      color: Colors.blue,
-      size: 30.0,
+    return IconButton(
+      onPressed: null,
+      icon: Icon(
+        Icons.play_circle_outline_outlined,
+        color: Colors.blue,
+        size: 30.0,
+      ),
+      tooltip: 'En desarrollo',
     );
   } else if (status == 2) {
-    return Icon(
-      Icons.sentiment_very_satisfied,
-      color: Colors.green,
-      size: 30.0,
+    return IconButton(
+      onPressed: null,
+      icon: Icon(
+        Icons.sentiment_very_satisfied,
+        color: Colors.green,
+        size: 30.0,
+      ),
+      tooltip: 'Finalizado',
     );
   } else {
-    return Icon(
-      Icons.help_outline_outlined,
-      color: Colors.grey[300],
-      size: 30.0,
+    return IconButton(
+      onPressed: null,
+      icon: Icon(
+        Icons.help_outline_outlined,
+        color: Colors.grey[300],
+        size: 30.0,
+      ),
+      tooltip: 'Comunicate pronto',
     );
   }
 }
