@@ -1,4 +1,5 @@
 import 'dart:convert';
+import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 import 'package:inblex_app/global/Environment.dart';
@@ -7,7 +8,7 @@ import 'package:inblex_app/models/project_user_response.dart';
 import 'package:inblex_app/models/sprint_project_response.dart';
 import 'package:inblex_app/shared/shared_preferences_manager.dart';
 
-class ListProjectUserService {
+class ListProjectUserService with ChangeNotifier {
   final pref = new SharedPreferencesManager();
 
   Future<List<ProjectResponse>> getListProjectUser() async {

@@ -1,24 +1,22 @@
 import 'package:flutter/material.dart';
+import 'package:inblex_app/helpers/alert_message.dart';
+import 'package:inblex_app/helpers/calendar_modific.dart';
+import 'package:provider/provider.dart';
+
+import 'package:inblex_app/services/diary_user_service.dart';
 import 'package:inblex_app/helpers/alert_message_event.dart';
+import 'package:inblex_app/models/get_list_diary_response.dart';
+
+import 'package:inblex_app/widgets/header_title.dart';
+import 'package:inblex_app/widgets/list_title_diary_project_user.dart';
 
 class Tab2EventPage extends StatefulWidget {
+
   @override
   _Tab2EventPageState createState() => _Tab2EventPageState();
 }
 
 class _Tab2EventPageState extends State<Tab2EventPage> {
-  List<String> event = [
-    'Cambios en mi proyecto',
-    'Cambios en mi proyecto 2',
-    'Cambios en mi proyecto 3',
-  ];
-
-  final List<Color> colors = [
-    Colors.pink,
-    Colors.purple,
-    Colors.red,
-  ];
-
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -31,8 +29,8 @@ class _Tab2EventPageState extends State<Tab2EventPage> {
           physics: BouncingScrollPhysics(),
           child: Column(
             children: [
-              _HeaderTitle(),
-              _ListEvents(event, colors),
+               HeaderTitle(title: 'Eventos'),
+              _ListEvents(),
             ],
           ),
         ),
@@ -59,158 +57,82 @@ class _Tab2EventPageState extends State<Tab2EventPage> {
   }
 }
 
-class _HeaderTitle extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-        width: double.infinity,
-        margin:
-            EdgeInsets.only(top: 25.0, left: 15.0, right: 15.0, bottom: 15.0),
-        child: Text('Eventos',
-            style: TextStyle(
-                fontSize: 25.0,
-                color: Colors.black,
-                fontWeight: FontWeight.w400)));
-  }
-}
-
 class _ListEvents extends StatelessWidget {
-  final List<String> event;
-  final List<Color> color;
 
-  _ListEvents(this.event, this.color);
+  final List<Color> colors = [
+    Colors.pink,
+    Colors.purple,
+    Colors.blue,
+    Colors.blueGrey,
+    Colors.orange,
+    Colors.black26,
+    Colors.yellowAccent,
+    Colors.red,
+  ];
 
   @override
   Widget build(BuildContext context) {
-    return ListView.builder(
-        padding:
-            const EdgeInsets.only(bottom: kFloatingActionButtonMargin + 48),
-        physics: NeverScrollableScrollPhysics(),
-        shrinkWrap: true,
-        itemCount: event.length,
-        itemBuilder: (context, i) {
-          return GestureDetector(
-            child: Dismissible(
-              key: UniqueKey(),
-              direction: DismissDirection.endToStart,
-              onDismissed: (DismissDirection direction) {
-                // TODO: Eliminar evento agendado
-                event.removeAt(i);
-              },
-              confirmDismiss: (direction) {
-                return Future.value(direction == DismissDirection.endToStart);
-              },
-              background: Container(
-              padding: EdgeInsets.only(right: 20.0),
-              margin: EdgeInsets.symmetric(vertical: 10.0),
-              color: Colors.red,
-              child: Align(
-                  alignment: Alignment.centerRight,
-                  child: Icon(Icons.delete, color: Colors.white))),
-              child: _ListTitle(event[i], color[i])
-            ),
-            onTap: () {
-              showAlertMessageEvent(
-                context, 
-                'Cambios de mi proyecto', 
-                '12 de Septiembre del 2021', 
-                '15:00', 
-                'Urgentemente necesito el cambio de interfaz.', 
-                'Pendiente'
+    final diary = Provider.of<DiaryUserService>(context);
+    return FutureBuilder(
+      future: diary.getListDairyUser(),
+      builder: (BuildContext context, AsyncSnapshot<List<ListDiaryResponse>> snapshot) {
+
+        if ( snapshot.hasData ) {
+          return ListView.builder(
+            padding: const EdgeInsets.only(bottom: kFloatingActionButtonMargin + 48),
+            physics: NeverScrollableScrollPhysics(),
+            shrinkWrap: true,
+            itemCount: snapshot.data.length,
+            itemBuilder: (context, i) {
+              ListDiaryResponse diaryResponse = snapshot.data[i];
+              return GestureDetector(
+                child: Dismissible(
+                  key: UniqueKey(),
+                  direction: DismissDirection.endToStart,
+                  onDismissed: (DismissDirection direction) {
+                    showAlertMessageDelete(context, 'Eliminar evento', '¿Desea eliminar realmente el evento?', () {
+                      final dairy = Provider.of<DiaryUserService>(context, listen: false);
+                      dairy.deleteDairyUser(diaryResponse.id);
+                      Navigator.pop(context);
+                    }, () {
+                        Navigator.pop(context);
+                    });
+                  },
+                  confirmDismiss: (direction) {
+                    return Future.value(direction == DismissDirection.endToStart);
+                  },
+                  background: Container(
+                  padding: EdgeInsets.only(right: 20.0),
+                  margin: EdgeInsets.symmetric(vertical: 10.0),
+                  color: Colors.red,
+                  child: Align(
+                      alignment: Alignment.centerRight,
+                      child: Icon(Icons.delete, color: Colors.white))),
+                  child: ListTitleDiary(diary: diaryResponse, color: colors[i * 3])
+                ),
+                onTap: () {
+                  showAlertMessageEvent(
+                    context, 
+                    diaryResponse.temaCita.tema,
+                    dateModific(context, diaryResponse.fecha),
+                    diaryResponse.hora.substring(0, 5),
+                    diaryResponse.contenido,
+                    'Pendiente??'
+                  );
+                },
               );
-            },
+            });
+          
+        } else {
+          return Container(
+            width: double.infinity,
+            height: MediaQuery.of(context).size.height * 0.8,
+            child: Center(
+              child: CircularProgressIndicator(),
+            ),
           );
-        });
-  }
-}
-
-class _ListTitle extends StatelessWidget {
-  final String event;
-  final Color color;
-
-  _ListTitle(this.event, this.color);
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      margin:
-          EdgeInsets.only(top: 10.0, right: 10.0, bottom: 10.0, left: 10.0),
-      // margin: EdgeInsets.symmetric(horizontal: 10.0, vertical: 10.0),
-      width: double.infinity,
-      height: 100.0,
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(10.0),
-        color: Colors.white,
-        boxShadow: <BoxShadow>[
-          BoxShadow(
-              color: Colors.grey[400],
-              blurRadius: 10.0,
-              spreadRadius: 1.0,
-              offset: Offset(1.0, 5.0))
-        ],
-      ),
-      child: Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          Container(
-            width: 7.0,
-            decoration: BoxDecoration(
-                borderRadius: BorderRadius.only(
-                    topLeft: Radius.circular(10.0),
-                    bottomLeft: Radius.circular(10.0)),
-                color: this.color),
-          ),
-          Container(
-            margin: EdgeInsets.symmetric(horizontal: 15.0),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.center,
-              children: [
-                Text("Diciembre".toUpperCase(),
-                    style:
-                        TextStyle(color: Colors.grey[400], fontSize: 14.0),
-                    textAlign: TextAlign.center,
-                    overflow: TextOverflow.ellipsis),
-                SizedBox(height: 2.0),
-                Text("12",
-                    style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 28.0,
-                        fontWeight: FontWeight.w700),
-                    textAlign: TextAlign.center),
-              ],
-            ),
-          ),
-          Expanded(
-            child: Container(
-              padding: EdgeInsets.symmetric(horizontal: 20.0),
-              alignment: Alignment.centerLeft,
-              child: Column(
-                mainAxisAlignment: MainAxisAlignment.center,
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  Text(event,
-                      style: TextStyle(color: Colors.black, fontSize: 16.0),
-                      textAlign: TextAlign.start,
-                      overflow: TextOverflow.ellipsis),
-                  SizedBox(height: 6.0),
-                  Text("15:00",
-                      style: TextStyle(
-                          color: Colors.grey[400], fontSize: 14.0),
-                      textAlign: TextAlign.start),
-                ],
-              ),
-            ),
-          ),
-          Container(
-            margin: EdgeInsets.symmetric(horizontal: 20.0),
-            child: Icon(
-              Icons.info_outline,
-              color: Colors.grey,
-              size: 28.0,
-            ),
-          )
-        ],
-      ),
+        }
+      },
     );
   }
 }

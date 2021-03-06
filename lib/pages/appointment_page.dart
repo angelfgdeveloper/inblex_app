@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import 'package:inblex_app/services/diary_user_service.dart';
 import 'package:inblex_app/helpers/alert_message_schedule.dart';
 
 import 'package:inblex_app/models/get_hour_model.dart';
+import 'package:inblex_app/models/topics_response.dart';
 
 import 'package:inblex_app/widgets/button_gradient.dart';
 import 'package:inblex_app/widgets/custom_calendar.dart';
@@ -17,20 +19,14 @@ class AppointmentPage extends StatefulWidget {
 }
 
 class _AppointmentPageState extends State<AppointmentPage> {
-  final List<String> menu = [
-    'Costos y cotización de un proyecto',
-    'Información sobre mi proyecto',
-    'Cambios en mi proyecto',
-    'Avances de mi proyecto',
-    'Servicios de la empresa',
-    'Otro'
-  ];
 
-  String selectedMenu;
 
   @override
   Widget build(BuildContext context) {
     final hourProvider = Provider.of<HourModel>(context);
+    // final diaryService = Provider.of<DiaryUserService>(context);
+    // diaryService.getTema();
+
 
     final affairCtrl = TextEditingController();
     final scheduleCtrl = TextEditingController();
@@ -56,14 +52,7 @@ class _AppointmentPageState extends State<AppointmentPage> {
                 crossAxisAlignment: CrossAxisAlignment.start,
                 children: [
                   _HeaderTitle(),
-                  _DropDownButton(
-                      menu: menu,
-                      selectedMenu: selectedMenu,
-                      onChange: (newValue) {
-                        setState(() {
-                          selectedMenu = newValue;
-                        });
-                      }),
+                  _DropDownButton(),
                   Container(
                     width: double.infinity,
                     margin: EdgeInsets.only(top: 10.0, right: 15.0, left: 15.0),
@@ -123,28 +112,48 @@ class _AppointmentPageState extends State<AppointmentPage> {
   }
 }
 
-class _DropDownButton extends StatelessWidget {
-  final List<String> menu;
-  final String selectedMenu;
-  final Function onChange;
+class _DropDownButton extends StatefulWidget {
 
-  const _DropDownButton({
-    @required this.menu,
-    @required this.selectedMenu,
-    @required this.onChange,
-  });
+  @override
+  __DropDownButtonState createState() => __DropDownButtonState();
+}
+
+class __DropDownButtonState extends State<_DropDownButton> {
+
+  String selectedMenu;
 
   @override
   Widget build(BuildContext context) {
+    final diaryService = Provider.of<DiaryUserService>(context);
+
     return Container(
       width: double.infinity,
       margin: EdgeInsets.only(top: 10.0, right: 15.0, left: 15.0),
-      child: DropDownButton(
-          menu: menu,
-          selectedMenu: selectedMenu,
-          textBox: 'Temas de la reunión',
-          placeHolder: 'Temas de la reunión',
-          onChange: this.onChange),
+      child: FutureBuilder(
+        future: diaryService.getTopic(),
+        builder: (BuildContext context, AsyncSnapshot<List<TopicResponse>> snapshot) {
+
+          if ( snapshot.hasData ) {
+
+            return DropDownButton(
+              menu: snapshot.data,
+              selectedMenu: selectedMenu,
+              textBox: 'Temas de la reunión',
+              placeHolder: 'Temas de la reunión',
+              onChange: ( newValue ){
+                setState(() {
+                  selectedMenu = newValue;
+                });
+              },
+            );
+          } else {
+            return Center(
+              child: CircularProgressIndicator()
+            );
+          }
+        },
+      ),
+          
     );
   }
 }

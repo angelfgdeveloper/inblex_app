@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:inblex_app/models/topics_response.dart';
 
 // ignore: must_be_immutable
 class DropDownButton extends StatelessWidget {
-  List<String> menu;
+  List<TopicResponse> menu;
   String selectedMenu;
   Function onChange;
   String textBox;
@@ -52,8 +53,8 @@ class DropDownButton extends StatelessWidget {
               iconEnabledColor: this.iconEnabledColor,
               items: this.menu.map((value) {
                 return DropdownMenuItem(
-                  value: value,
-                  child: Text(value,
+                  value: value.tema,
+                  child: Text(value.tema,
                       style: TextStyle(
                           fontWeight: FontWeight.w200, fontSize: 18.0)),
                 );

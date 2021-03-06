@@ -10,6 +10,7 @@ import 'package:inblex_app/routes/routes.dart';
 import 'package:inblex_app/models/get_hour_model.dart';
 import 'package:inblex_app/services/auth_service.dart';
 import 'package:inblex_app/services/list_project_user_service.dart';
+import 'package:inblex_app/services/diary_user_service.dart';
  
 void main() async {
   Provider.debugCheckInvalidValueType = null;
@@ -30,6 +31,7 @@ class MyApp extends StatelessWidget {
         Provider(create: (_) => HourModel()),
         Provider(create: (_) => AuthService()),
         Provider(create: (_) => ListProjectUserService()),
+        Provider(create: (_) => DiaryUserService()),
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
